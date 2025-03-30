@@ -1,12 +1,13 @@
 'use client'
 import { assets } from '@/assets/assets'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 const Navbar = () => {
   const [darkMode, setDarkMode] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isScroll, setisScroll] = useState(false)
 
   const toggleDarkMode = () => {
     setDarkMode((prev) => !prev)
@@ -17,8 +18,26 @@ const Navbar = () => {
     setMenuOpen((prev) => !prev)
   }
 
+  useEffect(() => {
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (window.scrollY > 50) {
+          setisScroll(true)
+        } else {
+          setisScroll(false)
+        }
+      },
+      []
+    )
+  })
+
   return (
-    <nav className='w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between bg-white shadow-md'>
+    <nav
+      className={`w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 ${
+        isScroll ? 'bg-white bg-opacity-50 backdrop-blur-lg shadow-sm' : ''
+      }`}
+    >
       <Link href='#top'>
         <Image
           src={assets.logo}
